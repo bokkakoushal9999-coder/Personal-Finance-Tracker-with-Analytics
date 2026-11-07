@@ -28,6 +28,8 @@ Thumbs.db
 .vscode/
 .idea/
 .kiro/
+__pycache__/
+*.pyc
 
 # Track client/dist for Streamlit Cloud deployment
 !client/dist/
