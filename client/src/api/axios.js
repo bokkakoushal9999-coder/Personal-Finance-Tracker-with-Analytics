@@ -1,9 +1,24 @@
 import axios from 'axios';
 import { handleOfflineMock } from './mockData';
 
+/**
+ * Determine API Base URL dynamically:
+ * 1. If VITE_API_URL is set (e.g. on Vercel pointing to Render backend), use it.
+ * 2. Fall back to relative '/api' (handled by Vite dev proxy or same-domain hosts).
+ */
+const getBaseUrl = () => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (envUrl && typeof envUrl === 'string') {
+    const clean = envUrl.trim().replace(/\/+$/, '');
+    return clean.endsWith('/api') ? clean : `${clean}/api`;
+  }
+  return '/api';
+};
+
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: getBaseUrl(),
   headers: { 'Content-Type': 'application/json' },
+  withCredentials: true,
 });
 
 api.interceptors.request.use((config) => {
@@ -19,7 +34,7 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // If backend is unreachable or returning 404 (e.g. on Streamlit Cloud or offline preview)
+    // If backend is unreachable or returning 404 (e.g. on Streamlit Cloud, initial demo preview, or network drop)
     if (!error.response || error.response.status === 404 || error.code === 'ERR_NETWORK') {
       const fallback = handleOfflineMock(error.config);
       if (fallback) {

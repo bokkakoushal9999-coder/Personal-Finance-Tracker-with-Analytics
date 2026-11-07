@@ -257,3 +257,4 @@ export function handleOfflineMock(config) {
 
   return null;
 }
+
