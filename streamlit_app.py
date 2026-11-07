@@ -147,7 +147,7 @@ with tab_analytics:
                 values="amount",
                 names="category",
                 hole=0.45,
-                color_discrete_sequence=px.colors.qualitative.Emerald
+                color_discrete_sequence=["#10b981", "#3b82f6", "#8b5cf6", "#f43f5e", "#f59e0b", "#06b6d4", "#ec4899", "#84cc16"]
             )
             fig_pie.update_layout(
                 paper_bgcolor="rgba(0,0,0,0)",
