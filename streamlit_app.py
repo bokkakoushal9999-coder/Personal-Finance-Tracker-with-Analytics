@@ -39,6 +39,11 @@ st.markdown("""
         color: #f8fafc !important;
         font-weight: 800 !important;
     }
+    iframe {
+        width: 100% !important;
+        min-height: 92vh !important;
+        border: none !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -57,13 +62,6 @@ with st.sidebar:
     st.caption("Personal Finance & Analytics Platform")
     
     st.markdown("---")
-    view_mode = st.radio(
-        "Select Application View:",
-        ["🌟 Full React Web App (Vite + Recharts)", "📊 Streamlit Native Analytics Studio"],
-        index=0
-    )
-    
-    st.markdown("---")
     st.subheader("⚙️ Deployment Settings")
     api_base_url = st.text_input("Backend API Base URL", value="http://localhost:5001/api")
     
@@ -72,44 +70,21 @@ with st.sidebar:
     - Frontend: React 18, Tailwind CSS, Recharts
     - Backend: Node.js, Express.js
     - Database: MongoDB
-    - Hosting: Streamlit Cloud / Render / Vercel
+    - Standard Currency: Indian Rupee (INR ₹)
     """)
-    st.caption("Standard Currency: Indian Rupee (INR ₹)")
+    st.markdown("---")
+    st.caption("Developed by bokkakoushal9999-coder")
+
+# Top Navigation Tabs
+tab_analytics, tab_react = st.tabs([
+    "📊 Financial Analytics Studio",
+    "🌟 Interactive React Web App"
+])
 
 # ==========================================
-# VIEW 1: FULL REACT WEB APPLICATION
+# TAB 1: FINANCIAL ANALYTICS STUDIO
 # ==========================================
-if view_mode == "🌟 Full React Web App (Vite + Recharts)":
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    dist_path = os.path.join(current_dir, "client", "dist")
-    
-    if os.path.exists(dist_path) and os.path.exists(os.path.join(dist_path, "index.html")):
-        # Remove Streamlit container padding for full viewport height
-        st.markdown("""
-        <style>
-            .block-container {
-                padding: 0rem !important;
-                max-width: 100% !important;
-            }
-            iframe {
-                width: 100% !important;
-                min-height: 96vh !important;
-                border: none !important;
-            }
-        </style>
-        """, unsafe_allow_html=True)
-        
-        # Mount React application compiled distribution
-        finance_tracker = components.declare_component("personal_finance_tracker", path=dist_path)
-        finance_tracker()
-    else:
-        st.error(f"React production build not found at `{dist_path}`.")
-        st.info("Run `cd client && npm run build` to generate the production assets.")
-
-# ==========================================
-# VIEW 2: STREAMLIT NATIVE ANALYTICS STUDIO
-# ==========================================
-else:
+with tab_analytics:
     st.title("📊 Financial Analytics & Insights Studio")
     st.markdown("Live rule-based financial analysis, expense distributions, and monthly trends in **INR (₹)**.")
 
@@ -123,7 +98,7 @@ else:
     except Exception:
         pass
 
-    # Fallback sample dataset if backend is sleeping or during offline demo
+    # Fallback sample dataset if backend is offline or sleeping
     if not transactions:
         transactions = [
             {"date": "2026-11-01", "title": "Monthly Salary", "type": "income", "category": "Salary", "amount": 95000},
@@ -136,7 +111,7 @@ else:
             {"date": "2026-11-08", "title": "Winter Apparel Shopping", "type": "expense", "category": "Shopping", "amount": 6200},
             {"date": "2026-11-09", "title": "Health Checkup & Pharmacy", "type": "expense", "category": "Healthcare", "amount": 2100},
         ]
-        st.info("💡 Displaying cached active financial records. Backend API can be synchronized in the sidebar.")
+        st.info("💡 Displaying active benchmark financial records. You can link your backend API in the sidebar.")
 
     df = pd.DataFrame(transactions)
     df["amount"] = pd.to_numeric(df["amount"], errors="coerce").fillna(0)
@@ -252,3 +227,18 @@ else:
         file_name="finance_tracker_transactions.csv",
         mime="text/csv"
     )
+
+# ==========================================
+# TAB 2: FULL REACT WEB APPLICATION
+# ==========================================
+with tab_react:
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    dist_path = os.path.join(current_dir, "client", "dist")
+    
+    if os.path.exists(dist_path) and os.path.exists(os.path.join(dist_path, "index.html")):
+        # Mount React application compiled distribution
+        finance_tracker = components.declare_component("personal_finance_tracker", path=dist_path)
+        finance_tracker()
+    else:
+        st.error(f"React production build not found at `{dist_path}`.")
+        st.info("Run `cd client && npm run build` to generate the production assets.")

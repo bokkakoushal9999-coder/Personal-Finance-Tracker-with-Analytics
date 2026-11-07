@@ -6,18 +6,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Personal Finance Tracker with Analytics</title>
     <script>
-      // Streamlit Custom Component Auto-Resize Handshake
-      try {
-        window.addEventListener('load', function() {
-          window.parent.postMessage({ type: 'streamlit:componentReady', apiVersion: 1 }, '*');
-          function updateHeight() {
-            var h = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight, 950);
-            window.parent.postMessage({ type: 'streamlit:setFrameHeight', height: h }, '*');
+      (function() {
+        function sendStreamlit(type, data) {
+          try {
+            var msg = Object.assign({
+              isStreamlitMessage: true,
+              type: type,
+              apiVersion: 1
+            }, data || {});
+            window.parent.postMessage(msg, '*');
+          } catch(e) {}
+        }
+
+        function notifyReady() {
+          sendStreamlit('streamlit:componentReady');
+          var h = Math.max(
+            document.documentElement ? document.documentElement.scrollHeight : 0,
+            document.body ? document.body.scrollHeight : 0,
+            1000
+          );
+          sendStreamlit('streamlit:setFrameHeight', { height: h });
+        }
+
+        // Notify immediately
+        notifyReady();
+
+        // Notify on DOM ready
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', notifyReady);
+        }
+
+        // Notify on window load
+        window.addEventListener('load', notifyReady);
+
+        // Keep-alive height synchronization
+        setInterval(notifyReady, 800);
+
+        // Respond to Streamlit render calls
+        window.addEventListener('message', function(event) {
+          if (event.data && event.data.isStreamlitMessage && event.data.type === 'streamlit:render') {
+            notifyReady();
           }
-          updateHeight();
-          setInterval(updateHeight, 1000);
         });
-      } catch (e) {}
+      })();
     </script>
     <script type="module" crossorigin src="./assets/index-R1jJ8lMl.js"></script>
     <link rel="modulepreload" crossorigin href="./assets/vendor-react-D-lu6cUZ.js">
