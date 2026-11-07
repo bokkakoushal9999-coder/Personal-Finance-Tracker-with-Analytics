@@ -1,0 +1,6 @@
+// Compatibility file for typo extension variation: codebar.jxs -> CodeBar.jsx
+// React JSX standard file extension is .jsx. This file ensures compatibility.
+import CodeBar from './CodeBar.jsx';
+export default CodeBar;
+export { CodeBar };
+

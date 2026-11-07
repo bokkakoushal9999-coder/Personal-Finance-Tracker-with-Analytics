@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Personal Finance Tracker with Analytics</title>
+    <script>
+      // Streamlit Custom Component Auto-Resize Handshake
+      try {
+        window.addEventListener('load', function() {
+          window.parent.postMessage({ type: 'streamlit:componentReady', apiVersion: 1 }, '*');
+          function updateHeight() {
+            var h = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight, 950);
+            window.parent.postMessage({ type: 'streamlit:setFrameHeight', height: h }, '*');
+          }
+          updateHeight();
+          setInterval(updateHeight, 1000);
+        });
+      } catch (e) {}
+    </script>
+    <script type="module" crossorigin src="./assets/index-R1jJ8lMl.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/vendor-react-D-lu6cUZ.js">
+    <link rel="modulepreload" crossorigin href="./assets/vendor-icons-B0EhDbpI.js">
+    <link rel="modulepreload" crossorigin href="./assets/vendor-charts-BypPFf9t.js">
+    <link rel="stylesheet" crossorigin href="./assets/index-DdbhUkwG.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

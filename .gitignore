@@ -1,0 +1,34 @@
+# Node dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Local Environment & Secrets
+.env
+server/.env
+.env.local
+.env.*.local
+
+# Database local storage
+server/data/
+server/data/db/
+*.wt
+*.lock
+WiredTiger*
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# Editor and OS files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.kiro/
+
+# Track client/dist for Streamlit Cloud deployment
+!client/dist/
+!client/dist/**
