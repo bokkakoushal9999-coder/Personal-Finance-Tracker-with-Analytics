@@ -1,0 +1,17 @@
+{
+  "name": "personal-finance-tracker-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Full Stack Personal Finance Tracker with Analytics",
+  "scripts": {
+    "start": "node server/server.js",
+    "server": "node server/server.js",
+    "client": "npm --prefix client start",
+    "build": "npm --prefix server install && npm --prefix client install && npm --prefix client run build",
+    "install:all": "npm --prefix server install && npm --prefix client install",
+    "test": "node server/utils/testSuite.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
